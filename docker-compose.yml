@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: theshultz/kaplat-calculator-postgres-instance:latest
+    container_name: postgres-db
+    platform: linux/amd64
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_USER: postgres
+      POSTGRES_DB: operations
+
+  mongo:
+    image: theshultz/kaplat-calculator-mongo-instance:latest
+    container_name: mongo-db
+    platform: linux/amd64    
+    restart: always
+    ports:
+      - "27017:27017"
+
+  app:
+    image: rotemadimor/calculator-db:1.0
+    container_name: calculator-app
+    depends_on:
+      - postgres
+      - mongo
+    ports:
+      - "4785:8496"
